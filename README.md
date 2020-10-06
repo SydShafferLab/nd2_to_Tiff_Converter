@@ -25,44 +25,42 @@ Get bfmatlab
 
 # Input/Output
 
-# Input
+## Input
 Required
+
 infile     -> filename or full filepath string of the image stack
 
 Optional
+
 outDir   -> filepath for the Output
+
 nDigits  -> max order of magnitude for naming convention
                                ei. 'dapi001'  nDigits = 3
 
-Output
+## Output
+
 tif          ->    3D tiff files named "NAME#" were # coresponds to the Z stack and
                   takes into account previous existing files. NAME is taken from the wavelength
                   channel (ie DAPI, CY3,...) and changed so that arjlabimagetools can
                   read it. A folder is made for each file read. 
 
-This is an Example of the naming convention as follows:
-                  Our_names     arj_names
-                  alexa594  ->  alexa
-                  Atto647N  ->  cy
-                  cy3            ->  tmr
-                  700            ->  nir
-Add to this list in the "channelMap" if you have a strange naming convention to use arjlabimagetools.
+If you have a strange naming convention, add it to "channelMap" on the code in order to use arjlabimagetools.
 
  
 # Usage
 
-nd2toTiff('Fish_Scan1.nd2');   % read image stack in working directory and output in working directory
+nd2toTiff('Fish_Scan1.nd2');               % read image stack in working directory and output in working directory
 
 nd2toTiff('/path/to/file/Fish_Scan1.nd2'); % read image stack from specific filepath and output in working directory
 
-nd2toTiff('/path/to/file/*.nd2');  % read all nd2 files from specified filepath and output in working directory
+nd2toTiff('/path/to/file/*.nd2');          % read all nd2 files from specified filepath and output in working directory
 
 # Usage of 'outDir'
 
 nd2toTiff('/path/to/file/Fish_Scan1.nd2','outDir','/path/to/outputfile/') % read image stack from specific filepath and output file to outDir
 
-nd2toTiff('/path/to/file/*.nd2','outDir','/path/to/outputfile/') % read all nd2 files from specified filepath and output file to outDir
+nd2toTiff('/path/to/file/*.nd2','outDir','/path/to/outputfile/')          % read all nd2 files from specified filepath and output file to outDir
 
 # Usage of ‘nDigit'
 
-nd2toTiff('/path/to/file/Fish_Scan1.nd2','outDir','/path/to/outputfile/',’nDigits’,8) % file NAME# will have 8 digits, ei. 'dapi00000001'
+nd2toTiff('/path/to/file/Fish_Scan1.nd2','outDir','/path/to/outputfile/',’nDigits’,8)  % file NAME# will have 8 digits, ei. 'dapi00000001'
