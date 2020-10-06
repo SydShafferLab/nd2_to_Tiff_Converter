@@ -5,14 +5,11 @@ Converts .nd2 to .tiff
 The .nd2 acquired from Nikon Elements can have the following properties: single image, scan (x,y), stack (z),  timelapse (T),  multiple channels (c) or a combination scan + stack + channel + Time (x,y,z,c,T). The nd2toTiff can convert all of these, as long as they are less than ~2GB. This code requires an open source package bfmatlab to run (currently using bfmatlab 6.5.1). 
 
 #Required before running:
-           Get bfmatlab   
-                   1) Go to:   https://www.openmicroscopy.org/bio-formats/downloads/
-                   
-                   2) Download bfmatlab.zip
-                   
-                   3) Unzip and move bfmatlab folder to your MATLAB folder
-                   
-                   4) Add bfmatlab path to Matlab as follows:
+Get bfmatlab   
+      1) Go to:   https://www.openmicroscopy.org/bio-formats/downloads/
+      2) Download bfmatlab.zip
+      3) Unzip and move bfmatlab folder to your MATLAB folder
+      4) Add bfmatlab path to Matlab as follows:
                    
                                                                   a) Go to "File->Set Path" from within MATLAB or type 
                                                                   "pathtool" at the MATLAB prompt.
