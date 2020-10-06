@@ -1,49 +1,3 @@
-% nd2toTiff
-% Reads .nd2 files and produces .tif files
-%
-% Input
-% *|infile|*  - filename or full filepath string of the image stack
-% *|outDir|*  - filepath for the Output
-% *|nDigits|* - max order of magnitude for naming convention 
-%                                ei. 'dapi001'  nDigits = 3
-% 
-% Output
-% *|tiff|* - 3D tiff files named "NAME#" were # coresponds to the Z stack and
-%           takes into acount previous files. NAME is taken from the wavelength
-%           channel (ie DAPI, CY3,...) and changed so that arjlabimagetools can
-%           read it.
-%           This is an Example of the naming convention as follows:
-%                   Our_names     arj_names
-%                   alexa594  ->  alexa
-%                   Atto647N  ->  cy
-%                   cy3       ->  tmr
-%                   700       ->  nir
-%          Add to this list in the "channelMap"
-%
-% Required:
-%            Get bfmatlab   
-%                    1)Go to:   https://downloads.openmicroscopy.org/bio-formats/6.0.1/artifacts/
-%                    2)Download bfmatlab.zip
-%                    3)Unzip and move bfmatlab folder to your MATLAB folder
-%                    4)Add bfmatlab path to Matlab     
-% Usage
-%  >> T1 = nd2toTiff('Fish_Scan1.nd2');               % read image stack in working directory
-%
-%  >> T1 = nd2toTiff('/path/to/file/Fish_Scan1.nd2'); % read image stack from specific filepath
-%
-%  >> T1 = nd2toTiff('/path/to/file/*.nd2');          % read all nd2 files from specified filepath
-%
-% Usage of 'outDir'
-%
-%  >> T1 =
-%  nd2toTiff('/path/to/file/Fish_Scan1.nd2','outDir','/path/to/outputfile/') 
-% 
-%  >> T1 = nd2toTiff('/path/to/file/*.nd2','outDir','/path/to/outputfile/')
-%
-% Last Update 09/28/2020 Added the posibility to read multiple .nd2 
-
-
-
 function [] = nd2toTiff(infile,varargin)
 
 % The MAP
@@ -187,45 +141,51 @@ for f = 1:numel(file_name_nd2)
         stackSizeC = omeMeta.getPixelsSizeC(i-1).getValue(); % # of wavelength channels
         stackSizeZ = omeMeta.getPixelsSizeZ(i-1).getValue(); % # of Z slices
         
-        %stackSizeT = omeMeta.getPixelsSizeZ(i-1).getValue(); % # of Time slices
+        stackSizeT = omeMeta.getPixelsSizeT(i-1).getValue(); % # of Time slices
         
         % Arrays
         wave_numb = repmat(1:stackSizeC,1,stackSizeZ);     % repeating vector of channel #
         Z_numb    = repmat(1:stackSizeZ,1,stackSizeC);     % repeating vector of Z #
 
         for ii = 1:stackSizeC  % (# channels in i)
-            cnt = 1;
+            cnt = 1; %new .tif
             for iii = 1:stackSizeZ  % (# z slices in stack)
                 
-                %for iiii = 1:stackSizeT % (# Time frames)
+                for iiii = 1:stackSizeT % (# Time frames)
                 
-                % Read plane from series iSeries at Z, C, T coordinates (iZ, iC, iT)
-                iPlane = reader.getIndex(Z_numb(iii) - 1, wave_numb(ii) - 1, 0) + 1;
-                
-                
-                
-%________________________%%bfGetPlane fails if iPlane is too large________________
-                stack_fig  = bfGetPlane(reader, 1, 1, 1, 1024, 1024);
-                %stack_fig  = bfGetPlane(reader, iPlane);
+                    % Read plane from series iSeries at Z, C, T coordinates (iZ, iC, iT)
+                    iPlane = reader.getIndex(Z_numb(iii) - 1, wave_numb(ii) - 1, iiii - 1) + 1;
 
-                %---------------------------------------------------------
-                %                         Save Tiff 
-                %---------------------------------------------------------
-                % Change name 
-                channelName = omeMeta.getChannelName(i-1, ii-1);
-                channelName = channelName.toCharArray';
+
+
+    %________________________%%bfGetPlane fails if iPlane is too large________________
+    
+                    %stack_fig  = bfGetPlane(reader, 1, 1, 1, 1024, 1024);
+                    stack_fig  = bfGetPlane(reader, iPlane);
+ %____________________________________________________________________________________
  
-                outBaseName = strcat('%s%0', nDigits, 'd.tif');
-                outputFileName = fullfile(outDir(f), sprintf(outBaseName,channelMap(channelName),cnt_mult_files(f) + cnt_stacks));
+ 
+ 
+ 
+ 
+                    %---------------------------------------------------------
+                    %                         Save Tiff 
+                    %---------------------------------------------------------
+                    % Change name 
+                    channelName = omeMeta.getChannelName(i-1, ii-1);
+                    channelName = channelName.toCharArray';
 
-                if cnt == 1
-                    imwrite(stack_fig, outputFileName)
-                    cnt = 1 + cnt;
-                else
-                    imwrite(stack_fig, outputFileName, 'writemode', 'append')
-                    cnt = 1 + cnt;
+                    outBaseName = strcat('%s%0', nDigits, 'd.tif');
+                    outputFileName = fullfile(outDir(f), sprintf(outBaseName,channelMap(channelName),cnt_mult_files(f) + cnt_stacks));
+
+                    if cnt == 1
+                        imwrite(stack_fig, outputFileName)
+                        cnt = 1 + cnt;
+                    else
+                        imwrite(stack_fig, outputFileName, 'writemode', 'append')
+                        cnt = 1 + cnt;
+                    end
                 end
-                
             end
         end            
      end
@@ -235,4 +195,3 @@ fprintf('\n');
 fprintf('   %s\n',"Done");
 fprintf('\n');
 end
-
