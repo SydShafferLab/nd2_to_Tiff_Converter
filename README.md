@@ -9,9 +9,10 @@ Get bfmatlab
 1) Go to:   https://www.openmicroscopy.org/bio-formats/downloads/
 
 2) Download bfmatlab.zip
-3) Unzip and move bfmatlab folder to your MATLAB folder
+3) Unzip and move bfmatlab folder to your MATLAB folder (make your life easier and move nd2toTiff in the bfmatlab folder).
 
 4) Add bfmatlab path to Matlab as follows:
+
 a) Go to "File->Set Path" from within MATLAB or type 
                             "pathtool" at the MATLAB prompt.
                             
