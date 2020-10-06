@@ -13,19 +13,19 @@ Get bfmatlab
 
 4) Add bfmatlab path to Matlab as follows:
 
-a) Go to "File->Set Path" from within MATLAB or type 
+      a) Go to "File->Set Path" from within MATLAB or type 
                             "pathtool" at the MATLAB prompt.
                             
-b) Use the "Add" button to add your desired folder(s) to 
+      b) Use the "Add" button to add your desired folder(s) to 
                             the MATLAB path.
                             
-c) Click "Save" so that this path is used in future 
+      c) Click "Save" so that this path is used in future 
                             MATLAB sessions.
 
 
 # Input/Output
 
-#Input
+# Input
 Required
 infile     -> filename or full filepath string of the image stack
 
@@ -46,10 +46,10 @@ This is an Example of the naming convention as follows:
                   Atto647N  ->  cy
                   cy3            ->  tmr
                   700            ->  nir
-Add to this list in the "channelMap" if you have a strange naming convention 
+Add to this list in the "channelMap" if you have a strange naming convention to use arjlabimagetools.
 
  
-#Usage
+# Usage
 
 nd2toTiff('Fish_Scan1.nd2');   % read image stack in working directory and output in working directory
 
@@ -57,12 +57,12 @@ nd2toTiff('/path/to/file/Fish_Scan1.nd2'); % read image stack from specific file
 
 nd2toTiff('/path/to/file/*.nd2');  % read all nd2 files from specified filepath and output in working directory
 
-#Usage of 'outDir'
+# Usage of 'outDir'
 
 nd2toTiff('/path/to/file/Fish_Scan1.nd2','outDir','/path/to/outputfile/') % read image stack from specific filepath and output file to outDir
 
 nd2toTiff('/path/to/file/*.nd2','outDir','/path/to/outputfile/') % read all nd2 files from specified filepath and output file to outDir
 
-#Usage of ‘nDigit'
+# Usage of ‘nDigit'
 
 nd2toTiff('/path/to/file/Fish_Scan1.nd2','outDir','/path/to/outputfile/',’nDigits’,8) % file NAME# will have 8 digits, ei. 'dapi00000001'
