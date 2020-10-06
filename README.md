@@ -53,18 +53,18 @@ If you have a strange naming convention, add it to "channelMap" on the code in o
  
 # Usage
 
-      nd2toTiff('Fish_Scan1.nd2');.....................% read image stack in working directory and output in working directory
+      nd2toTiff('Fish_Scan1.nd2');                 % read image stack in working directory and output in working directory
 
-      nd2toTiff('/path/to/file/Fish_Scan1.nd2');...% read image stack from specific filepath and output in working directory
+      nd2toTiff('/path/to/file/Fish_Scan1.nd2');   % read image stack from specific filepath and output in working directory
 
-      nd2toTiff('/path/to/file/*.nd2');................% read all nd2 files from specified filepath and output in working directory
+      nd2toTiff('/path/to/file/*.nd2');            % read all nd2 files from specified filepath and output in working directory
 
 ## Usage of 'outDir'
 
-nd2toTiff('/path/to/file/Fish_Scan1.nd2','outDir','/path/to/outputfile/');..% read image stack from specific filepath and output file to outDir
+      nd2toTiff('/path/to/file/Fish_Scan1.nd2','outDir','/path/to/outputfile/');  % read image stack from specific filepath and output file to outDir
 
-nd2toTiff('/path/to/file/*.nd2','outDir','/path/to/outputfile/');...............% read all nd2 files from specified filepath and output file to outDir
+      nd2toTiff('/path/to/file/*.nd2','outDir','/path/to/outputfile/');           % read all nd2 files from specified filepath and output file to outDir
 
 ## Usage of ‘nDigit'
 
-nd2toTiff('/path/to/file/Fish_Scan1.nd2','outDir','/path/to/outputfile/',’nDigits’,8);..% file NAME# will have 8 digits, ei. 'dapi00000001'
+      nd2toTiff('/path/to/file/Fish_Scan1.nd2','outDir','/path/to/outputfile/',’nDigits’,8); % file NAME# will have 8 digits, ei. 'dapi00000001'
