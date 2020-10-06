@@ -25,10 +25,14 @@ Get bfmatlab
 
 # Input/Output
 
+nd2toTiff(inDir,'outDir', '/path/to/outputfile/', 'nDigits', 3); 
+
 ## Input
 Required
 
-infile     -> filename or full filepath string of the image stack
+inDir     -> filename or full filepath string of the image stack
+
+-----
 
 Optional
 
@@ -55,12 +59,12 @@ nd2toTiff('/path/to/file/Fish_Scan1.nd2'); % read image stack from specific file
 
 nd2toTiff('/path/to/file/*.nd2');          % read all nd2 files from specified filepath and output in working directory
 
-# Usage of 'outDir'
+## Usage of 'outDir'
 
 nd2toTiff('/path/to/file/Fish_Scan1.nd2','outDir','/path/to/outputfile/') % read image stack from specific filepath and output file to outDir
 
 nd2toTiff('/path/to/file/*.nd2','outDir','/path/to/outputfile/')          % read all nd2 files from specified filepath and output file to outDir
 
-# Usage of ‘nDigit'
+## Usage of ‘nDigit'
 
 nd2toTiff('/path/to/file/Fish_Scan1.nd2','outDir','/path/to/outputfile/',’nDigits’,8)  % file NAME# will have 8 digits, ei. 'dapi00000001'
