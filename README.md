@@ -7,15 +7,19 @@ The .nd2 acquired from Nikon Elements can have the following properties: single 
 #Required before running:
            Get bfmatlab   
                    1) Go to:   https://www.openmicroscopy.org/bio-formats/downloads/
+                   
                    2) Download bfmatlab.zip
+                   
                    3) Unzip and move bfmatlab folder to your MATLAB folder
+                   
                    4) Add bfmatlab path to Matlab as follows:
-a) Go to "File->Set Path" from within MATLAB or type 
-"pathtool" at the MATLAB prompt.
-b) Use the "Add" button to add your desired folder(s) to 
-the MATLAB path.
-c) Click "Save" so that this path is used in future 
-MATLAB sessions.
+                   
+                                                                  a) Go to "File->Set Path" from within MATLAB or type 
+                                                                  "pathtool" at the MATLAB prompt.
+                                                                  b) Use the "Add" button to add your desired folder(s) to 
+                                                                  the MATLAB path.
+                                                                  c) Click "Save" so that this path is used in future 
+                                                                  MATLAB sessions.
 
 
 ## Input/Output
