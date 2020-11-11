@@ -1,8 +1,57 @@
+% nd2toTiff
+% Reads .nd2 files and produces .tif files
+% 
+% Input
+% *|infile|*  - filename or full filepath string of the image stack
+% *|outDir|*  - filepath for the Output
+% *|nDigits|* - max order of magnitude for naming convention 
+%                                ei. 'dapi001'  nDigits = 3
+% 
+% Output
+% *|tiff|* - 3D tiff files named "NAME#" were # coresponds to the Z stack and
+%           takes into acount previous files. NAME is taken from the wavelength
+%           channel (ie DAPI, CY3,...) and changed so that arjlabimagetools can
+%           read it.
+%           This is an Example of the naming convention as follows:
+%                   Our_names     arj_names
+%                   alexa594  ->  alexa
+%                   Atto647N  ->  cy
+%                   cy3       ->  tmr
+%                   700       ->  nir
+%          Add to this list in the "channelMap"
+% 
+% Required:
+%            Get bfmatlab   
+%                    1)Go to:   https://downloads.openmicroscopy.org/bio-formats/6.0.1/artifacts/
+%                    2)Download bfmatlab.zip
+%                    3)Unzip and move bfmatlab folder to your MATLAB folder
+%                    4)Add bfmatlab path to Matlab     
+% Usage
+%  >> T1 = nd2toTiff('Fish_Scan1.nd2');               % read image stack in working directory
+% 
+%  >> T1 = nd2toTiff('/path/to/file/Fish_Scan1.nd2'); % read image stack from specific filepath
+% 
+%  >> T1 = nd2toTiff('/path/to/file/*.nd2');          % read all nd2 files from specified filepath
+% 
+% Usage of 'outDir'
+% 
+%  >> T1 =
+%  nd2toTiff('/path/to/file/Fish_Scan1.nd2','outDir','/path/to/outputfile/') 
+% 
+%  >> T1 = nd2toTiff('/path/to/file/*.nd2','outDir','/path/to/outputfile/')
+% 
+% Last Update 11/10/2020 Fixed bug in timelapse reader and added some
+% print statements
+%
+% By Raul A. Reyes Hueros (raanreye)
+
+
+
 function [] = nd2toTiff(infile,varargin)
 
 % The MAP
-channelMap = containers.Map({'Brightfield', 'DAPI', 'YFP', 'GFP', 'CY3', 'Cy3', 'cy3', 'A594', 'CY5', 'A647', '700', 'CY7','NIR'},...
-                            {'trans'      , 'dapi', 'gfp', 'gfp', 'tmr', 'tmr', 'tmr','alexa', 'cy', 'cy'  , 'nir', 'nir','nir'});
+channelMap = containers.Map({'Brightfield', 'DAPI', 'YFP', 'GFP', 'CY3', 'Cy3', 'cy3', 'A594', 'CY5', 'A647', '700', 'CY7','NIR','OFF'},...
+                            {'trans'      , 'dapi', 'gfp', 'gfp', 'tmr', 'tmr', 'tmr','alexa', 'cy', 'cy'  , 'nir', 'nir','nir','off'});
 
 
 % Input check
@@ -75,11 +124,13 @@ if numel(c) == 0                                       % Folder path given
     end
     
     outDir = out_file_folder; % update outdir 
+    fprintf('\n');
     fprintf('Reading %d Files:  \n',numel(file_name_nd2));
     
 else                                                     % File path given
     file_name     = string(file_name);
     file_name_nd2 = string(strcat(file_name,'.nd2'));
+    fprintf('\n');
     fprintf('Reading one File:  \n');
     
     out_file_name   = strcat(outDir,'/',file_name,'.nd2');
@@ -150,9 +201,14 @@ for f = 1:numel(file_name_nd2)
         for ii = 1:stackSizeC  % (# channels in i)
             cnt = 1; %new .tif
             for iii = 1:stackSizeZ  % (# z slices in stack)
-                
+                cnt_time = 0; % new time frame
                 for iiii = 1:stackSizeT % (# Time frames)
-                
+                    
+                    if mod(iiii,10) == 0
+                        % stack being read
+                        fprintf('                       Frame = %03d\n',i);
+                    end
+                    
                     % Read plane from series iSeries at Z, C, T coordinates (iZ, iC, iT)
                     iPlane = reader.getIndex(Z_numb(iii) - 1, wave_numb(ii) - 1, iiii - 1) + 1;
 
@@ -175,8 +231,10 @@ for f = 1:numel(file_name_nd2)
                     channelName = omeMeta.getChannelName(i-1, ii-1);
                     channelName = channelName.toCharArray';
 
-                    outBaseName = strcat('%s%0', nDigits, 'd.tif');
-                    outputFileName = fullfile(outDir(f), sprintf(outBaseName,channelMap(channelName),cnt_mult_files(f) + cnt_stacks));
+                    outBaseName = strcat('%s%0', nDigits, 'd.tif'); % set the 00# in file name 
+                    outputFileName = fullfile(outDir(f), sprintf(outBaseName,channelMap(channelName),cnt_mult_files(f) + cnt_stacks + cnt_time));
+                    
+                    cnt_time = cnt_time + 1;
 
                     if cnt == 1
                         imwrite(stack_fig, outputFileName)
@@ -195,3 +253,5 @@ fprintf('\n');
 fprintf('   %s\n',"Done");
 fprintf('\n');
 end
+
+
