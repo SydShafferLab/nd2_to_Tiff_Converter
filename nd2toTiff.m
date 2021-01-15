@@ -50,8 +50,8 @@
 function [] = nd2toTiff(infile,varargin)
 
 % The MAP
-channelMap = containers.Map({'Brightfield', 'DAPI', 'YFP', 'GFP', 'CY3', 'Cy3', 'cy3', 'A594', 'CY5', 'A647', '700', 'CY7','NIR','OFF'},...
-                            {'trans'      , 'dapi', 'gfp', 'gfp', 'tmr', 'tmr', 'tmr','alexa', 'cy', 'cy'  , 'nir', 'nir','nir','off'});
+channelMap = containers.Map({'Brightfield', 'DAPI','Dapi' 'YFP', 'GFP', 'CY3', 'Cy3', 'cy3', 'A594', 'CY5', 'A647', '700', 'CY7','NIR','OFF','CY3_1'},...
+                            {'trans'      , 'dapi', 'dapi','gfp', 'gfp', 'tmr', 'tmr', 'tmr','alexa', 'cy', 'cy'  , 'nir', 'nir','nir','off','gfp'});
 
 
 % Input check
@@ -184,6 +184,10 @@ for f = 1:numel(file_name_nd2)
         reader.setSeries(i-1)                                % set ith z stack 
         
         if mod(i,25) == 0
+            if i == 25
+                % Total stack being read
+                fprintf('                 Total Stack = %03d\n',Zstacknumb);
+            end
             % stack being read
             fprintf('                       Stack = %03d\n',i);
         end
@@ -205,8 +209,14 @@ for f = 1:numel(file_name_nd2)
                 for iiii = 1:stackSizeT % (# Time frames)
                     
                     if mod(iiii,10) == 0
-                        % stack being read
-                        fprintf('                       Frame = %03d\n',i);
+                        
+                        if iiii == 10
+                            % Total frames being read
+                            fprintf('            Total Frames = %03d\n',stackSizeT);
+                        end
+                        
+                        % Frame being read
+                        fprintf('                       Frame = %03d\n',iiii);
                     end
                     
                     % Read plane from series iSeries at Z, C, T coordinates (iZ, iC, iT)
